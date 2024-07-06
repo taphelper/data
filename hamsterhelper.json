@@ -1,0 +1,102 @@
+{
+    "hamster_kombat": {
+        "id": "hamsterkombat",
+        "tag": "HK🐹",
+        "name": "Hamster Kombat",
+        "auth": {
+            "type": "header",
+            "header": "Authorization",
+            "prefix": "Bearer "
+        },
+        "routines": [
+            {
+                "id": "check_account",
+                "name": "Собрать прибыль",
+				"status": "Баланс: %balance%$ | Прибыль: %income%$/ч",
+                "requests": [
+                    {
+                        "method": "post",
+                        "url": "https://api.hamsterkombat.io/clicker/sync"
+                    }
+                ],
+                "result": {
+                    "profit": {
+                        "request_index": 0,
+                        "path": "clickerUser.lastPassiveEarn"
+                    },
+                    "income": {
+                        "request_index": 0,
+                        "path": "clickerUser.earnPassivePerHour"
+                    },
+                    "balance": {
+                        "request_index": 0,
+                        "path": "clickerUser.balanceCoins"
+                    }
+                }
+            },
+            {
+                "id": "check_daily_task",
+                "name": "Забрать ежедневный бонус",
+				"status": "Баланс: %balance%$ | Прибыль: %income%$/ч",
+                "requests": [
+                    {
+                        "method": "post",
+                        "url": "https://api.hamsterkombat.io/clicker/check-task",
+						"body": "{\"taskId\": \"streak_days\"}"
+                    }
+                ],
+                "result": {
+                    "income": {
+                        "request_index": 0,
+                        "path": "clickerUser.earnPassivePerHour"
+                    },
+                    "balance": {
+                        "request_index": 0,
+                        "path": "clickerUser.balanceCoins"
+                    }
+                }
+            },
+			{
+				"id": "solve_cipher",
+				"name": "Разгадать шифр",
+                "java": "solve_cipher"
+			}
+        ],
+        "actions": {
+            "check_balance": {
+                "id": "check_balance",
+                "name": "Проверить баланс",
+                "requests": [
+                    {
+                        "method": "post",
+                        "url": "https://api.hamsterkombat.io/clicker/sync"
+                    }
+                ],
+                "result": {
+                    "text": "Balance: <b>%1$</b><br>Income: <b>%2$/ч</b>",
+					"status": "%1 | %2",
+                    "vars": [
+                        {
+                            "request_index": 0,
+                            "path": "clickerUser.balanceCoins"
+                        },
+                        {
+                            "request_index": 0,
+                            "path": "clickerUser.earnPassivePerHour"
+                        }
+                    ]
+                }
+            },
+			"best_upgrades": {
+				"id": "best_upgrades",
+				"name": "Посмотреть лучшие прокачки",
+				"java": "best_upgrades"
+			},
+			"get_cipher": {
+				"id": "get_cipher",
+				"name": "Посмотреть лучшие прокачки",
+				"java": "get_cipher"
+			}
+        }
+    }
+}
